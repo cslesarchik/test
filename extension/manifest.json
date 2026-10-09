@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Chat GIF Suggester",
+  "version": "0.1.0",
+  "description": "Spots the right moment for a reaction GIF in Google Chat and suggests one in real time.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://localhost:8787/*"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "background": { "service_worker": "src/background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://chat.google.com/*", "https://mail.google.com/chat/*"],
+      "js": ["src/heuristics.js", "src/chat-dom.js", "src/ui.js", "src/content.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": { "default_title": "Chat GIF Suggester", "default_popup": "options.html" }
+}

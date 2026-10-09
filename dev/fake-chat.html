@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+  A stand-in for Google Chat for trying the extension's in-page behavior
+  without a Workspace account. Load it with dev/harness.mjs, which stubs the
+  chrome.* APIs and points them at a backend (real or mocked).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fake Chat</title>
+  <style>
+    body { font: 14px system-ui, sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+    main { flex: 1; overflow: auto; padding: 16px; }
+    .msg { margin: 6px 0; }
+    .msg b { margin-right: 6px; }
+    footer { padding: 12px 16px; border-top: 1px solid #ddd; }
+    [contenteditable] { border: 1px solid #aaa; border-radius: 18px; padding: 10px 14px; min-height: 20px; }
+  </style>
+</head>
+<body>
+  <main role="main">
+    <div class="msg" data-message-id="1"><b data-name="Priya">Priya</b><span dir="auto">deploy finished, all checks green</span></div>
+    <div class="msg" data-message-id="2"><b data-name="Sam">Sam</b><span dir="auto">WAIT. Is it actually live??</span></div>
+  </main>
+  <footer>
+    <div contenteditable="true" role="textbox" aria-label="Message"></div>
+  </footer>
+  <script>
+    // Simulate Chat: Enter posts the draft as a message.
+    const box = document.querySelector('[role="textbox"]');
+    let id = 3;
+    box.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" || e.shiftKey) return;
+      e.preventDefault();
+      const text = box.innerText.trim();
+      if (!text) return;
+      const div = document.createElement("div");
+      div.className = "msg";
+      div.dataset.messageId = id++;
+      div.dataset.isSelf = "true";
+      div.innerHTML = '<b data-name="Me">Me</b><span dir="auto"></span>';
+      div.querySelector("span").textContent = text;
+      document.querySelector("main").append(div);
+      box.textContent = "";
+    });
+    window.postFromOther = (name, text) => {
+      const div = document.createElement("div");
+      div.className = "msg";
+      div.dataset.messageId = id++;
+      div.innerHTML = '<b></b><span dir="auto"></span>';
+      div.querySelector("b").textContent = name;
+      div.querySelector("b").dataset.name = name;
+      div.querySelector("span").textContent = text;
+      document.querySelector("main").append(div);
+    };
+  </script>
+</body>
+</html>

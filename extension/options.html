@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chat GIF Suggester</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 14px/1.4 system-ui, sans-serif; margin: 16px; min-width: 320px; max-width: 480px; }
+    h1 { font-size: 16px; margin: 0 0 12px; }
+    label { display: block; margin: 10px 0 4px; font-weight: 600; }
+    label.inline { display: flex; align-items: center; gap: 8px; font-weight: 400; }
+    input[type=text], input[type=password], input[type=number] { width: 100%; box-sizing: border-box; padding: 6px; }
+    small { opacity: .7; }
+    button { margin-top: 14px; padding: 6px 14px; }
+    #status { margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Chat GIF Suggester</h1>
+  <label class="inline"><input type="checkbox" id="enabled"> Suggest GIFs while I chat</label>
+
+  <label for="serverUrl">Backend URL</label>
+  <input type="text" id="serverUrl" placeholder="http://localhost:8787">
+
+  <label for="token">Access token</label>
+  <input type="password" id="token" placeholder="SUGGESTER_TOKEN from the server's .env">
+
+  <label for="threshold">Sensitivity</label>
+  <input type="number" id="threshold" min="0.05" max="1" step="0.05">
+  <small>Local score needed before asking the backend. Lower means more suggestions (and more API calls).</small>
+
+  <label for="cooldownSec">Cooldown (seconds)</label>
+  <input type="number" id="cooldownSec" min="0" step="10">
+
+  <label class="inline"><input type="checkbox" id="sendDraft"> Use my unsent draft when deciding</label>
+
+  <button id="save">Save</button><span id="status"></span>
+  <script src="options.js"></script>
+</body>
+</html>
