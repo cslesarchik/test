@@ -42,8 +42,7 @@ npm start                # http://localhost:8787
 
 - Get a GIPHY key at https://developers.giphy.com/dashboard/ (an "API" app).
 - `SUGGESTER_TOKEN` is any long random string, e.g. `openssl rand -hex 24`. The extension sends it in a header.
-- The model defaults to `claude-opus-5-5` at `low` effort, for speed. `CLAUDE_MODEL`, `CLAUDE_EFFORT`, `MIN_CONFIDENCE` and `RERANK` are all in `.env`. If latency or cost matters more than judgment, try `CLAUDE_MODEL=claude-haiku-5-5`, or `RERANK=false` to skip the second call.
-- Requests opt into server-side refusal fallbacks (`fallbacks: "default"`), so a safety decline on one model is retried on another automatically.
+- The model defaults to `claude-haiku-5-5` at `low` effort: fast and very cheap (well under a tenth of a cent per suggestion). `CLAUDE_MODEL`, `CLAUDE_EFFORT`, `MIN_CONFIDENCE` and `RERANK` are all in `.env`. For sharper judgment at higher cost, try `CLAUDE_MODEL=claude-sonnet-5-5` or `claude-opus-5-5`. On those models, requests also opt into server-side refusal fallbacks (`fallbacks: "default"`). Haiku has no fallback, so a declined request simply means no suggestion.
 
 ### 2. Extension
 

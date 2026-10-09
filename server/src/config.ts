@@ -7,7 +7,7 @@ function effortFromEnv(value: string | undefined): Effort {
 
 export const config = {
   port: Number(process.env.PORT ?? 8787),
-  model: process.env.CLAUDE_MODEL ?? "claude-opus-5-5",
+  model: process.env.CLAUDE_MODEL ?? "claude-haiku-5-5",
   effort: effortFromEnv(process.env.CLAUDE_EFFORT),
   giphyApiKey: process.env.GIPHY_API_KEY ?? "",
   giphyRating: process.env.GIPHY_RATING ?? "pg",

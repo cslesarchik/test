@@ -6,6 +6,8 @@ import { MOMENTS, type ChatMessage, type Gif, type MomentDecision } from "./type
 
 const client = new Anthropic();
 
+const FALLBACK_MODELS = new Set(["claude-fable-5-1", "claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5"]);
+
 const MomentSchema = z.object({
   suggest: z.boolean(),
   confidence: z.number(),
@@ -50,8 +52,10 @@ async function parseStructured<T extends z.ZodType>(
   const response = await client.beta.messages.parse({
     model: config.model,
     max_tokens: 4000,
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default",
+    // Server-side refusal fallbacks exist only on some models (not Haiku).
+    ...(FALLBACK_MODELS.has(config.model)
+      ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }
+      : {}),
     output_config: { effort: config.effort, format: betaZodOutputFormat(schema) },
     system,
     messages: [{ role: "user", content }],
