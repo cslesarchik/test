@@ -53,6 +53,9 @@ export function createSuggester(deps: SuggestDeps) {
     }
 
     const settled = await Promise.allSettled(decision.queries.map((q) => deps.searchGifs(q)));
+    settled.forEach((s, i) => {
+      if (s.status === "rejected") console.warn(`GIF search "${decision.queries[i]}" failed:`, String(s.reason));
+    });
     const candidates = interleave(
       settled.map((s) => (s.status === "fulfilled" ? s.value : [])),
     ).slice(0, 12);
